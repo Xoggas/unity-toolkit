@@ -18,7 +18,7 @@ Then add to `Packages/manifest.json`:
 "com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow"
 ```
 
-To pin a version, append a tag: `...?path=/Packages/com.xoggas.flow#flow/1.0.0`.
+To pin a version, append a tag: `...?path=/Packages/com.xoggas.flow#flow/1.1.0`.
 
 ## Usage
 
@@ -80,3 +80,25 @@ stateMachine.ChangeState<MenuState>();
 ```
 
 `Update(float deltaTime)` is called on the current state every frame, except while a transition is in progress.
+
+#### Transitions
+
+Transitions are queued. Calling `GoTo<T>()` from `Enter`, `Exit` or an event handler doesn't interrupt the running transition: the next one starts after the current state has finished entering. Requests run in the order they were made.
+
+`ChangeState<T>()` is fire-and-forget; errors from `Enter`/`Exit` go to UniTask's unobserved exception handler. To wait for a transition or catch its errors, use `await stateMachine.ChangeStateAsync<T>()`. Don't await it from a state's own `Enter`/`Exit`: it waits for the current transition, which is waiting for that state, so it never completes. Use `GoTo<T>()` there.
+
+`CurrentState` and `IsTransitioning` expose the machine's status. Requesting a state that wasn't registered throws immediately.
+
+#### Cancellation
+
+Each state has a `CancellationToken` that is cancelled when the state starts exiting (before `Exit` runs) and when the `StateMachine` is destroyed. Pass it to async work started in `Enter` or in handlers so it stops with the state. `InvokeAsync` from a state uses it by default.
+
+```csharp
+protected override async UniTask Enter()
+{
+    await UniTask.Delay(3000, cancellationToken: CancellationToken);
+    GoTo<GameplayState>();
+}
+```
+
+When the `StateMachine` is destroyed, queued transitions are cancelled and the current state's token is cancelled and its subscriptions disposed. `Exit` is not called, since the scene is being torn down.

@@ -22,10 +22,10 @@ Third-party dependencies (UniTask, VContainer) are git packages, so Unity can't 
 
 ## Versions
 
-Each package is tagged separately as `<package>/<version>`, for example `flow/1.0.0`. Pin a package by appending the tag:
+Each package is tagged separately as `<package>/<version>`, for example `flow/1.1.0`. Pin a package by appending the tag:
 
 ```json
-"com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow#flow/1.0.0"
+"com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow#flow/1.1.0"
 ```
 
 ## History
