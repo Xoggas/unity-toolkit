@@ -15,10 +15,10 @@ Flow depends on these packages, which must be installed in your project first:
 Then add to `Packages/manifest.json`:
 
 ```json
-"com.xoggas.flow": "https://github.com/Xoggas/flow.git"
+"com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow"
 ```
 
-To pin a version, append a tag: `https://github.com/Xoggas/flow.git#1.0.0`.
+To pin a version, append a tag: `...?path=/Packages/com.xoggas.flow#flow/1.0.0`.
 
 ## Usage
 

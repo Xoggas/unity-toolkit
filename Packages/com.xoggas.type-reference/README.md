@@ -10,6 +10,16 @@ replacement for SolidAlloy's `TypeReferences` package: same namespace (`TypeRefe
 `TypeReference` field type, same `[Inherits]` attribute, same serialized field names, so it can
 read data that was already saved by the old package.
 
+## Installation
+
+Add to `Packages/manifest.json`:
+
+```json
+"com.xoggas.type-reference": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.type-reference"
+```
+
+To pin a version, append a tag: `...?path=/Packages/com.xoggas.type-reference#type-reference/1.0.0`.
+
 ## Usage
 
 ```csharp

@@ -1,0 +1,19 @@
+{
+  "name": "com.xoggas.ui",
+  "version": "1.0.0",
+  "displayName": "UI",
+  "description": "UI Toolkit panel system: stack-based PanelSwitcher navigation, responsive (portrait/landscape) UIDocument panels, compound and confirmation panels, timed popups and an underline-on-hover effect. Panels receive the PanelSwitcher via VContainer.",
+  "unity": "2021.3",
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "ui toolkit",
+    "uielements",
+    "panels",
+    "navigation",
+    "vcontainer"
+  ],
+  "author": {
+    "name": "Xoggas"
+  }
+}
