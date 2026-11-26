@@ -1,0 +1,19 @@
+{
+  "name": "com.xoggas.flow",
+  "version": "1.0.0",
+  "displayName": "Flow",
+  "description": "Lightweight game flow toolkit: a type-based EventBus with sync and async (UniTask) events, and an async finite state machine whose states are injected via VContainer.",
+  "unity": "2021.3",
+  "license": "MIT",
+  "keywords": [
+    "fsm",
+    "state machine",
+    "event bus",
+    "events",
+    "unitask",
+    "vcontainer"
+  ],
+  "author": {
+    "name": "Xoggas"
+  }
+}
