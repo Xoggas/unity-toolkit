@@ -5,7 +5,6 @@ A small panel system for Unity UI Toolkit, extracted from Pumpkin Quest.
 - **PanelSwitcher**: stack-based navigation. `GoTo` pushes a panel, `GoBack` pops it, `GoBackUntil<T>` pops until a panel of type `T` is on top.
 - **UIPanel**: a panel with its own `UIDocument` and separate UXML/PanelSettings for portrait and landscape screens. Show/hide toggles the `enabled` USS class, so transitions are styled in USS. Optionally also toggles `display`.
 - **CompoundPanel**: activates/deactivates several panels as one navigation step.
-- **ConfirmationPanel**: a `UIPanel` with `Ok`, `Close` and `Cancel` buttons; override `Confirmed()` and `Declined()`.
 - **Popup**: a timed element inside a document; `ShowInternal()` adds the `visible` USS class for a set duration.
 - **UnderlineOnHover**: underlines a Label/Button's text while hovered, with an Inspector that lists the document's named elements.
 
@@ -41,13 +40,8 @@ public sealed class MainMenuPanel : UIPanel
     {
         base.Awake();
         Root.Q<Button>("Settings").clicked += () => PanelSwitcher.GoTo(_settings);
+        Root.Q<Button>("Back").clicked += PanelSwitcher.GoBack;
     }
-}
-
-public sealed class ExitConfirmationPanel : ConfirmationPanel
-{
-    protected override void Confirmed() => Application.Quit();
-    protected override void Declined() => PanelSwitcher.GoBack();
 }
 ```
 
@@ -77,3 +71,4 @@ The script `.meta` GUIDs are the same as in Pumpkin Quest, so scenes and prefabs
 - `Popup` no longer injects `GameSettingsProvider`; popups that need it (such as `RelationshipPopup`) inject it themselves.
 - `PanelBase` moved to its own file, `PanelSwitcher.GoTo` accepts any `PanelBase`, and the `[Required]` marker on `UIPanel` fields was dropped.
 - `ClickSoundPlayer`, `LocalizationBinding` and `CustomButton` stayed in the game: they depend on its audio, settings and localization code.
+- `ConfirmationPanel` stayed in the game too: it is a concrete panel built on `UIPanel` (it relies on a document with `Ok`, `Close` and `Cancel` buttons), not part of the panel system.

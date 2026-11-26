@@ -6,7 +6,7 @@ Three independent Unity packages in one repository. Each one lives in its own fo
 |---|---|---|---|
 | **Flow** (`com.xoggas.flow`) | [`Packages/com.xoggas.flow`](Packages/com.xoggas.flow) | Type-based EventBus with sync and async events, and an async FSM | UniTask, VContainer |
 | **Type Reference** (`com.xoggas.type-reference`) | [`Packages/com.xoggas.type-reference`](Packages/com.xoggas.type-reference) | Serializable `System.Type` field with a searchable, filtered Inspector dropdown | nothing |
-| **UI** (`com.xoggas.ui`) | [`Packages/com.xoggas.ui`](Packages/com.xoggas.ui) | UI Toolkit panels: stack navigation, responsive panels, confirmations, popups | VContainer |
+| **UI** (`com.xoggas.ui`) | [`Packages/com.xoggas.ui`](Packages/com.xoggas.ui) | UI Toolkit panels: stack navigation, responsive panels, popups | VContainer |
 
 ## Installation
 
