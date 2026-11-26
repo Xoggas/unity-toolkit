@@ -18,7 +18,7 @@ Then add to `Packages/manifest.json`:
 "com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow"
 ```
 
-To pin a version, append a tag: `...?path=/Packages/com.xoggas.flow#flow/1.1.0`.
+To pin a version, append a tag: `...?path=/Packages/com.xoggas.flow#flow/1.2.0`.
 
 ## Usage
 
@@ -50,7 +50,7 @@ Async subscribers of one event run concurrently; `InvokeAsync` completes when al
 
 ### FSM
 
-States receive `IEventBus` and `StateMachine` via VContainer injection, so both must be registered in the container and states must be resolved (or injected) through it.
+States receive `IEventBus` via VContainer injection, so it must be registered in the container and states must be resolved (or injected) through it. A state belongs to the `StateMachine` it was registered with: `RegisterState` binds it, and `GoTo<T>()` and the `StateMachine` property refer to that machine.
 
 ```csharp
 using Xoggas.Flow;
@@ -69,7 +69,6 @@ public sealed class MenuState : State
 
 ```csharp
 builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
-builder.RegisterComponentInHierarchy<StateMachine>();
 builder.Register<MenuState>(Lifetime.Singleton);
 builder.Register<GameplayState>(Lifetime.Singleton);
 
@@ -78,6 +77,28 @@ stateMachine.RegisterState(container.Resolve<MenuState>());
 stateMachine.RegisterState(container.Resolve<GameplayState>());
 stateMachine.ChangeState<MenuState>();
 ```
+
+The `StateMachine` itself doesn't have to be in the container, since states don't inject it.
+
+#### Several state machines
+
+Any number of `StateMachine` components can run at once, for example one for game flow and one per enemy. Each keeps its own states, current state and transition queue, and `GoTo<T>()` only affects the machine the state belongs to. Machines can share one `IEventBus`.
+
+A state instance can be registered with only one machine; registering it with a second one throws. Give each machine its own instances, which means the state types must not be singletons shared between machines:
+
+```csharp
+builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
+builder.Register<PatrolState>(Lifetime.Transient);
+builder.Register<ChaseState>(Lifetime.Transient);
+
+// for each enemy
+var machine = enemy.GetComponent<StateMachine>();
+machine.RegisterState(container.Resolve<PatrolState>());
+machine.RegisterState(container.Resolve<ChaseState>());
+machine.ChangeState<PatrolState>();
+```
+
+Alternatively, give each machine its own `LifetimeScope` with scoped or singleton states.
 
 `Update(float deltaTime)` is called on the current state every frame, except while a transition is in progress.
 

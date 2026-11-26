@@ -13,10 +13,13 @@ namespace Xoggas.Flow
         [Inject]
         private readonly IEventBus _eventBus;
 
-        [Inject]
-        private readonly StateMachine _stateMachine;
-
         private readonly List<IDisposable> _subscriptions = new();
+
+        /// <summary>
+        /// The machine this state was registered with via <see cref="Flow.StateMachine.RegisterState"/>.
+        /// Null until then. A state instance belongs to exactly one machine.
+        /// </summary>
+        protected StateMachine StateMachine { get; private set; }
 
         private CancellationTokenSource _lifetime;
 
@@ -58,6 +61,18 @@ namespace Xoggas.Flow
         protected UniTask InvokeAsync<T>(T evt, CancellationToken cancellationToken) where T : IAsyncEvent
         {
             return _eventBus.InvokeAsync(evt, cancellationToken);
+        }
+
+        internal void AttachTo(StateMachine stateMachine)
+        {
+            if (StateMachine is not null && !ReferenceEquals(StateMachine, stateMachine))
+            {
+                throw new InvalidOperationException(
+                    $"State {GetType().Name} is already registered with another StateMachine. " +
+                    "Create a separate state instance for each machine.");
+            }
+
+            StateMachine = stateMachine;
         }
 
         internal UniTask EnterAsync()
@@ -118,12 +133,18 @@ namespace Xoggas.Flow
         }
 
         /// <summary>
-        /// Requests a transition. Safe to call from <see cref="Enter"/>, <see cref="Exit"/> and
-        /// event handlers: the transition is queued until the current one finishes.
+        /// Requests a transition in this state's own machine. Safe to call from <see cref="Enter"/>,
+        /// <see cref="Exit"/> and event handlers: the transition is queued until the current one finishes.
         /// </summary>
         protected void GoTo<T>() where T : State
         {
-            _stateMachine.ChangeState<T>();
+            if (StateMachine is null)
+            {
+                throw new InvalidOperationException(
+                    $"State {GetType().Name} isn't registered with a StateMachine");
+            }
+
+            StateMachine.ChangeState<T>();
         }
 
         private void Unsubscribe()

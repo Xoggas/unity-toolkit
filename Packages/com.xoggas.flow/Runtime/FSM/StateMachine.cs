@@ -35,10 +35,13 @@ namespace Xoggas.Flow
                 throw new ArgumentNullException(nameof(state));
             }
 
-            if (!_states.TryAdd(state.GetType(), state))
+            if (_states.ContainsKey(state.GetType()))
             {
-                throw new InvalidOperationException($"State {state.GetType().Name} is already registered");
+                throw new InvalidOperationException($"State {state.GetType().Name} is already registered with this StateMachine");
             }
+
+            state.AttachTo(this);
+            _states.Add(state.GetType(), state);
         }
 
         /// <summary>
