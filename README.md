@@ -1,6 +1,6 @@
 # Unity Toolkit
 
-Two independent Unity packages in one repository. Each one lives in its own folder under `Packages/`, has its own `package.json`, assemblies and version, and neither depends on the other.
+Two independent Unity packages and a project template in one repository. Each one lives in its own folder under `Packages/`, has its own `package.json`, assemblies and version, and neither depends on the other.
 
 | Package | Folder | What it is | Needs |
 |---|---|---|---|
@@ -25,6 +25,16 @@ Each package is tagged separately as `<package>/<version>`, for example `flow/1.
 ```json
 "com.xoggas.flow": "https://github.com/Xoggas/unity-toolkit.git?path=/Packages/com.xoggas.flow#flow/1.2.0"
 ```
+
+## Project template
+
+[`Templates/com.xoggas.template.universal-2d`](Templates/com.xoggas.template.universal-2d) is a Unity Hub template for Unity 6000.6: Universal 2D (URP) with both packages above plus VContainer, UniTask, R3, ObservableCollections, NuGetForUnity, Newtonsoft.Json, Alchemy and LitMotion, and Newtonsoft converters for R3 and ObservableCollections. Build and install it with:
+
+```powershell
+./Templates/pack.ps1 -Install
+```
+
+See its [README](Templates/com.xoggas.template.universal-2d/README.md) for details.
 
 ## History
 

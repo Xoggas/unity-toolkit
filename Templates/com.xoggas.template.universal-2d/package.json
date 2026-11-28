@@ -1,0 +1,9 @@
+{
+  "name": "com.xoggas.template.universal-2d",
+  "displayName": "Universal 2D (Xoggas)",
+  "version": "1.0.0",
+  "type": "template",
+  "host": "hub",
+  "unity": "6000.6",
+  "description": "2D URP with the 2D Renderer, plus unity-toolkit (Flow, Type Reference), VContainer, UniTask, R3 + ObservableCollections (via NuGetForUnity), Newtonsoft.Json, Alchemy and LitMotion."
+}
